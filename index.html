@@ -1,15 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Commerce Frontend</title>
-    <link rel="stylesheet" href="styles/main.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Commerce Frontend</title>
+  <link rel="stylesheet" href="styles/main.css" />
 </head>
 <body>
-    <header>
-        <h1>Welcome to Our Online Store</h1>
-    </header>
-    <script src="scripts/app.js"></script>
+
+  <!-- ✅ Header with Logo, Navigation, Search Bar, Cart Icon, Hamburger Menu -->
+  <header class="header">
+    <div class="logo">🛍️ ShopMate</div>
+
+    <nav class="nav-links" id="nav-links">
+      <a href="./home.html">Home</a>
+      <a href="./products.html">Products</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html">Contact</a>
+    </nav>
+
+    <div class="header-right">
+      <div class="search-bar">
+        <input type="text" placeholder="Search products..." />
+      </div>
+      <div class="cart">
+        🛒<span class="cart-badge">3</span>
+      </div>
+      <div class="hamburger" id="hamburger">&#9776;</div>
+    </div>
+  </header>
+  <section class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title">Biggest Sale of the Year!</h1>
+    <p class="hero-subtitle">Up to 70% off on top products. Limited time only.</p>
+    <a href="./products.html" class="hero-cta">Shop Now</a>
+  </div>
+</section>
+
+
+  <!-- Optional main content placeholder -->
+  <main>
+    <h1>Welcome to Our Online Store</h1>
+  </main>
+
+  <script src="scripts/app.js"></script>
 </body>
 </html>
