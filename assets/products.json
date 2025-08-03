@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "title": "Wireless Bluetooth Earbuds",
+    "price": 1499,
+    "image": "assets/Wireless_Bluetooth_Earbuds.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Men's Running Shoes",
+    "price": 2499,
+    "image": "assets/Men's Running Shoes.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Smartphone 6.5-inch Display",
+    "price": 11999,
+    "image": "assets/Smartphone 6.5-inch Display.jpg"
+  },
+  {
+    "id": 4,
+    "title": "Women's Handbag - Leather",
+    "price": 1599,
+    "image": "assets/Women's Handbag - Leather.jpg"
+  },
+  {
+    "id": 5,
+    "title": "Digital Watch for Men",
+    "price": 799,
+    "image": "assets/Digital Watch for Men.jpg"
+  },
+  {
+    "id": 6,
+    "title": "Casual T-Shirt - White",
+    "price": 499,
+    "image": "assets/Casual T-Shirt - White.jpg"
+  },
+  {
+    "id": 7,
+    "title": "Laptop with Intel i5",
+    "price": 42999,
+    "image": "assets/Laptop with Intel i5.jpg"
+  },
+  {
+    "id": 8,
+    "title": "Wireless Mouse",
+    "price": 599,
+    "image": "assets/Wireless Mouse.jpg"
+  },
+  {
+    "id": 9,
+    "title": "Men's Wallet - Brown",
+    "price": 499,
+    "image": "assets/Men's Wallet - Brown.jpg"
+  },
+  {
+    "id": 10,
+    "title": "Women’s Sunglasses",
+    "price": 699,
+    "image": "assets/Women’s Sunglasses.jpg"
+  },
+  {
+    "id": 11,
+    "title": "Gaming Headset",
+    "price": 1999,
+    "image": "assets/Gaming Headset.jpg"
+  },
+  {
+    "id": 12,
+    "title": "Formal Shirt - Blue",
+    "price": 999,
+    "image": "assets/Formal Shirt - Blue.jpg"
+  },
+  {
+    "id": 13,
+    "title": "Fitness Tracker Band",
+    "price": 1799,
+    "image": "assets/Fitness Tracker Band.jpg"
+  },
+  {
+    "id": 14,
+    "title": "Backpack for Laptop",
+    "price": 1199,
+    "image": "assets/Backpack for Laptop.jpg"
+  },
+  {
+    "id": 15,
+    "title": "LED Desk Lamp",
+    "price": 899,
+    "image": "assets/LED Desk Lamp.jpg"
+  },
+  {
+    "id": 16,
+    "title": "Bluetooth Speaker",
+    "price": 1299,
+    "image": "assets/Bluetooth Speaker.jpg"
+  },
+  {
+    "id": 17,
+    "title": "Men’s Jeans - Slim Fit",
+    "price": 1499,
+    "image": "assets/Men’s Jeans - Slim Fit.jpg"
+  },
+  {
+    "id": 18,
+    "title": "Wireless Charger Pad",
+    "price": 799,
+    "image": "assets/Wireless Charger Pad.jpg"
+  },
+  {
+    "id": 19,
+    "title": "Analog Wrist Watch",
+    "price": 999,
+    "image": "assets/Analog Wrist Watch.jpg"
+  },
+  {
+    "id": 20,
+    "title": "Graphic Hoodie - Unisex",
+    "price": 1299,
+    "image":"assets/Graphic Hoodie - Unisex.jpg"
+  }
+]
