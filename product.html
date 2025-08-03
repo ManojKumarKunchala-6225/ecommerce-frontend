@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Products</title>
+  <title>Product Detail</title>
   <link rel="stylesheet" href="styles/main.css" />
 </head>
 <body>
-
   <header class="header">
     <div class="logo">🛍️ ShopMate</div>
     <nav class="nav-links" id="nav-links">
@@ -18,22 +17,22 @@
     </nav>
     <div class="header-right">
       <div class="search-bar">
-        <input id="searchInput" type="text" placeholder="Search products..." />
+        <input type="text" id="searchInput" placeholder="Search products..." />
       </div>
       <div class="cart" onclick="window.location.href='cart.html'">
-        🛒<span id="cart-count" class="cart-badge">0</span>
+        🛒<span class="cart-badge" id="cart-count">0</span>
       </div>
-      <div class="hamburger" id="hamburger">☰</div>
+      <div class="hamburger" id="hamburger">&#9776;</div>
     </div>
   </header>
 
   <main>
-    <h1 class="center-text">🛍️ All Products</h1>
-    <div id="productGrid" class="product-grid">
-      </div>
+    <div id="productDetailContainer">
+      <p>Loading product details...</p>
+    </div>
   </main>
   
   <script src="scripts/app.js"></script>
-  <script src="scripts/products.js"></script>
+  <script src="scripts/product.js"></script>
 </body>
 </html>

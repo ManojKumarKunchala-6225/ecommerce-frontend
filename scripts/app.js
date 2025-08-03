@@ -1,63 +1,49 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const grid = document.getElementById("productGrid");
-  const dataSource = "https://fakestoreapi.com/products";
+// scripts/app.js - Common script for all pages
 
-  const loadProducts = async () => {
-    try {
-      // Show loading spinner
-      grid.innerHTML = `
-        <div class="loading-spinner">
-          <div class="spinner"></div>
-          <p>Loading products...</p>
-        </div>
-      `;
-
-      // Check localStorage cache (5 min)
-      const cached = localStorage.getItem("cachedProducts");
-      const cachedTime = localStorage.getItem("cachedTime");
-      const isFresh = cached && cachedTime && Date.now() - cachedTime < 5 * 60 * 1000;
-
-      const products = isFresh
-        ? JSON.parse(cached)
-        : await fetch(dataSource).then((res) => res.json());
-
-      if (!isFresh) {
-        localStorage.setItem("cachedProducts", JSON.stringify(products));
-        localStorage.setItem("cachedTime", Date.now());
-      }
-
-      grid.innerHTML = "";
-
-      products.forEach((product) => {
-        const card = document.createElement("div");
-        card.classList.add("product-card");
-
-        const title = product.title;
-        const price = product.price;
-        const image = product.image;
-
-        card.innerHTML = `
-          <div class="image-wrapper">
-            <img src="${image}" alt="${title}" loading="lazy">
-          </div>
-          <h3>${title.length > 40 ? title.slice(0, 40) + "..." : title}</h3>
-          <p>₹ ${price}</p>
-          <button class="add-to-cart-btn">Add to Cart</button>
-        `;
-
-        grid.appendChild(card);
-
-        card.querySelector(".add-to-cart-btn").addEventListener("click", () => {
-          alert(`✅ "${title}" added to cart!`);
-        });
-      });
-    } catch (err) {
-      grid.innerHTML = `<p style="color: red;">❌ Failed to load products. Please try again later.</p>`;
-      console.error("Data fetch error:", err);
-    }
-  };
-
-  if (grid) {
-    loadProducts();
+/**
+ * Creates a global function to update the cart count in the navbar.
+ * This can be called from any script to ensure the UI is always in sync.
+ */
+window.updateCartCount = function() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  // Calculate total quantity of all items in the cart, not just the number of entries
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const cartBadge = document.getElementById("cart-count");
+  
+  if (cartBadge) {
+    cartBadge.textContent = totalItems;
+    // Show the badge only if there are items in the cart
+    cartBadge.style.display = totalItems > 0 ? "block" : "none";
   }
-});
+};
+
+// A flag to ensure the hamburger menu logic is only attached once per session
+let isNavInitialized = false;
+
+/**
+ * Initializes all shared page features. This function is designed to run
+ * every time a page is displayed, including when using the browser's
+ * back and forward buttons.
+ */
+function initializePage() {
+  // Always update the cart count whenever a page is shown to the user
+  window.updateCartCount();
+
+  // The hamburger menu's click listener only needs to be set up once.
+  // This check prevents adding multiple listeners to the same element.
+  if (!isNavInitialized) {
+    const hamburger = document.getElementById("hamburger");
+    const navLinks = document.getElementById("nav-links");
+
+    if (hamburger && navLinks) {
+      hamburger.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+      });
+      isNavInitialized = true;
+    }
+  }
+}
+
+// Use the 'pageshow' event, which is more reliable than 'DOMContentLoaded'
+// for handling all types of page navigation, including back/forward actions.
+window.addEventListener('pageshow', initializePage);
