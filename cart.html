@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart - ShopMate</title>
+  <link rel="stylesheet" href="styles/main.css"/>
+  <link rel="stylesheet" href="styles/cart.css" />
+  <script src="scripts/nav.js" defer></script>
+  <script src="scripts/cart.js" defer></script>
+</head>
+<body>
+  <header>
+    <nav>
+      <h1>🛍️ShopMate</h1>
+      <div class="nav-right">
+        <a href="products.html">Products</a>
+        <a href="cart.html">Cart(<span id="cart-count">0</span>)</a>
+      </div>
+    </nav>
+
+  </header>
+
+  <main class="cart-page">
+    <h1>Your Shopping Cart</h1>
+    <div id="cart-items"></div>
+
+    <div class="cart-summary">
+      <h2>Total: <span id="total-price">₹0</span></h2>
+      <button id="checkout-btn" disabled>Proceed to Checkout</button>
+      <button onclick="window.location.href='products.html'" class="secondary">Continue Shopping</button>
+    </div>
+  </main>
+</body>
+</html>

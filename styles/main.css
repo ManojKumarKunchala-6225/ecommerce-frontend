@@ -1,10 +1,10 @@
 /* Reset & Base Styles */
 body {
   font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #d4fc79, #96e6a1);
   margin: 0;
   padding: 0;
   text-align: center;
-  background-color: #f9f9f9;
 }
 
 /* Header Styling */
@@ -25,7 +25,7 @@ body {
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #333;
+  color: #000 !important;
 }
 
 /* Navigation Links */
@@ -514,5 +514,24 @@ option:disabled {
 
   .mobile-zoom-trigger {
     display: inline-block; /* Show the Tap to Zoom button on mobile */
+  }
+}
+/* 🔁 Add this animation to your existing CSS */
+
+.success-message.animate {
+  animation: popIn 0.4s ease-out;
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
   }
 }

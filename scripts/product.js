@@ -5,49 +5,43 @@ document.addEventListener("DOMContentLoaded", () => {
   const productId = new URLSearchParams(window.location.search).get("id");
   const apiURL = `https://fakestoreapi.com/products/${productId}`;
 
-  // NOTE: This script relies on the global window.updateCartCount() from app.js
-
   const initImageZoom = (imgContainer, imgSrc) => {
     const img = imgContainer.querySelector("#product-image");
 
-    // --- Mobile Zoom Setup (Tap-to-Zoom) ---
+    // Mobile zoom
     const mobileTrigger = document.getElementById("mobile-zoom-trigger");
-    if (mobileTrigger) {
-      const triggerMobileZoom = () => {
-        if (window.innerWidth > 768) return;
-        if (document.querySelector('.zoom-popup')) return;
+    const triggerMobileZoom = () => {
+      if (window.innerWidth > 768 || document.querySelector(".zoom-popup")) return;
 
-        const popup = document.createElement("div");
-        popup.className = "zoom-popup";
-        const popupImage = document.createElement("img");
-        popupImage.src = imgSrc;
-        const closeBtn = document.createElement("span");
-        closeBtn.className = "close-zoom";
-        closeBtn.innerHTML = "&times;";
+      const popup = document.createElement("div");
+      popup.className = "zoom-popup";
+      const popupImage = document.createElement("img");
+      popupImage.src = imgSrc;
+      const closeBtn = document.createElement("span");
+      closeBtn.className = "close-zoom";
+      closeBtn.innerHTML = "&times;";
 
-        const closePopup = () => {
-          if (document.body.contains(popup)) {
-            document.body.removeChild(popup);
-          }
-        };
-
-        closeBtn.addEventListener("click", closePopup);
-        popup.addEventListener("click", (e) => {
-          if (e.target === popup) closePopup();
-        });
-
-        popup.appendChild(closeBtn);
-        popup.appendChild(popupImage);
-        document.body.appendChild(popup);
-        setTimeout(() => popup.classList.add("visible"), 10);
+      const closePopup = () => {
+        if (document.body.contains(popup)) document.body.removeChild(popup);
       };
 
-      // Trigger zoom on both the button and the image tap
+      closeBtn.addEventListener("click", closePopup);
+      popup.addEventListener("click", (e) => {
+        if (e.target === popup) closePopup();
+      });
+
+      popup.appendChild(closeBtn);
+      popup.appendChild(popupImage);
+      document.body.appendChild(popup);
+      setTimeout(() => popup.classList.add("visible"), 10);
+    };
+
+    if (mobileTrigger) {
       mobileTrigger.addEventListener("click", triggerMobileZoom);
       img.addEventListener("click", triggerMobileZoom);
     }
 
-    // --- Desktop Zoom Setup (Hover Lens) ---
+    // Desktop zoom
     const lens = document.createElement("div");
     lens.className = "zoom-lens";
     imgContainer.appendChild(lens);
@@ -61,10 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
       let x = e.pageX - pos.left - window.scrollX;
       let y = e.pageY - pos.top - window.scrollY;
 
-      if (x > pos.width - lens.offsetWidth / 2) x = pos.width - lens.offsetWidth / 2;
-      if (x < lens.offsetWidth / 2) x = lens.offsetWidth / 2;
-      if (y > pos.height - lens.offsetHeight / 2) y = pos.height - lens.offsetHeight / 2;
-      if (y < lens.offsetHeight / 2) y = lens.offsetHeight / 2;
+      x = Math.max(lens.offsetWidth / 2, Math.min(x, pos.width - lens.offsetWidth / 2));
+      y = Math.max(lens.offsetHeight / 2, Math.min(y, pos.height - lens.offsetHeight / 2));
 
       lens.style.left = `${x - lens.offsetWidth / 2}px`;
       lens.style.top = `${y - lens.offsetHeight / 2}px`;
@@ -76,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     imgContainer.addEventListener("mousemove", (e) => {
       if (window.innerWidth <= 768) {
-        lens.style.display = 'none';
+        lens.style.display = "none";
         return;
       }
       lens.style.display = "block";
@@ -90,7 +82,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const fetchProduct = async () => {
     try {
-      container.innerHTML = `<div class="loading-spinner"><div class="spinner"></div><p>Loading product details...</p></div>`;
+      container.innerHTML = `
+        <div class="loading-spinner">
+          <div class="spinner"></div>
+          <p>Loading product details...</p>
+        </div>`;
+
       const res = await fetch(apiURL);
       if (!res.ok) throw new Error("API Error");
 
@@ -115,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="variations-group">
               <div class="variations">
                 <label for="color">Color</label>
-                <select id="color" name="color">
+                <select id="color">
                   <option value="black">Black</option>
                   <option value="blue">Blue</option>
                   <option value="red">Red</option>
@@ -123,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
               <div class="variations">
                 <label for="size">Size</label>
-                <select id="size" name="size">
+                <select id="size">
                   <option value="S">Small</option>
                   <option value="M">Medium</option>
                   <option value="L">Large (+₹20)</option>
@@ -133,14 +130,14 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <div class="quantity-section">
-                <label for="quantity">Quantity</label>
-                <div class="quantity-selector">
-                    <button class="quantity-btn" id="decrease-quantity" aria-label="Decrease quantity">−</button>
-                    <input type="number" id="quantity" name="quantity" min="1" value="1" max="10" readonly>
-                    <button class="quantity-btn" id="increase-quantity" aria-label="Increase quantity">+</button>
-                </div>
+              <label for="quantity">Quantity</label>
+              <div class="quantity-selector">
+                <button id="decrease-quantity" class="quantity-btn">−</button>
+                <input type="number" id="quantity" min="1" value="1" readonly>
+                <button id="increase-quantity" class="quantity-btn">+</button>
+              </div>
             </div>
-            
+
             <button class="add-to-cart-btn">Add to Cart</button>
             <div id="success-message" class="success-message">✅ Added to Cart!</div>
 
@@ -151,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      const basePrice = product.price;
+      const basePrice = price;
       const priceElement = document.getElementById("product-price");
       const quantityInput = document.getElementById("quantity");
       const decreaseBtn = document.getElementById("decrease-quantity");
@@ -164,93 +161,83 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedSize = sizeSelector.value;
         let currentPrice = basePrice;
 
-        if (selectedSize === 'L') {
-          currentPrice += 20;
-        } else if (selectedSize === 'XL') {
-          currentPrice += 50;
-        }
+        if (selectedSize === "L") currentPrice += 20;
+        if (selectedSize === "XL") currentPrice += 50;
 
-        const totalPrice = currentPrice * quantity;
-        priceElement.textContent = `₹ ${totalPrice.toFixed(2)}`;
+        priceElement.textContent = `₹ ${(currentPrice * quantity).toFixed(2)}`;
       };
 
       sizeSelector.addEventListener("change", updateTotalPrice);
+      colorSelector.addEventListener("change", () => {
+        const selectedColor = colorSelector.value;
+        const largeOption = sizeSelector.querySelector('option[value="L"]');
+
+        if (selectedColor === "red") {
+          largeOption.disabled = true;
+          largeOption.textContent = "Large (Out of Stock)";
+          if (sizeSelector.value === "L") {
+            sizeSelector.value = "M";
+          }
+        } else {
+          largeOption.disabled = false;
+          largeOption.textContent = "Large (+₹20)";
+        }
+        updateTotalPrice();
+      });
 
       decreaseBtn.addEventListener("click", () => {
-        if (parseInt(quantityInput.value) > 1) {
-          quantityInput.value--;
+        let quantity = parseInt(quantityInput.value);
+        if (quantity > 1) {
+          quantityInput.value = --quantity;
           updateTotalPrice();
         }
       });
 
       increaseBtn.addEventListener("click", () => {
-        const max = parseInt(quantityInput.max) || 10;
-        if (parseInt(quantityInput.value) < max) {
-          quantityInput.value++;
+        let quantity = parseInt(quantityInput.value);
+        if (quantity < 10) {
+          quantityInput.value = ++quantity;
           updateTotalPrice();
         }
       });
 
-      const handleVariationChange = () => {
-        const selectedColor = colorSelector.value;
-        const largeSizeOption = sizeSelector.querySelector('option[value="L"]');
-        if (selectedColor === 'red') {
-          largeSizeOption.disabled = true;
-          if (sizeSelector.value === 'L') {
-            sizeSelector.value = 'M';
-            updateTotalPrice();
-          }
-          largeSizeOption.textContent = "Large (Out of Stock)";
-        } else {
-          largeSizeOption.disabled = false;
-          largeSizeOption.textContent = "Large (+₹20)";
-        }
-      };
-      colorSelector.addEventListener("change", handleVariationChange);
+      updateTotalPrice();
 
       const imgContainer = container.querySelector(".image-zoom-container");
-      if (imgContainer) {
-        const productImg = imgContainer.querySelector("#product-image");
-        productImg.onload = () => {
-          initImageZoom(imgContainer, product.image);
-        };
-        if (productImg.complete) {
-          initImageZoom(imgContainer, product.image);
-        }
-      }
+      const productImg = imgContainer.querySelector("#product-image");
+
+      productImg.onload = () => initImageZoom(imgContainer, product.image);
+      if (productImg.complete) initImageZoom(imgContainer, product.image);
 
       container.querySelector(".add-to-cart-btn").addEventListener("click", () => {
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
         const selectedSize = sizeSelector.value;
         const selectedColor = colorSelector.value;
         const quantity = parseInt(quantityInput.value);
 
-        const existingItemIndex = cart.findIndex(item =>
-          item.id === product.id &&
-          item.selectedSize === selectedSize &&
-          item.selectedColor === selectedColor
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const existingIndex = cart.findIndex(
+          (item) =>
+            item.id === product.id &&
+            item.selectedSize === selectedSize &&
+            item.selectedColor === selectedColor
         );
 
-        if (existingItemIndex > -1) {
-          cart[existingItemIndex].quantity += quantity;
+        if (existingIndex !== -1) {
+          cart[existingIndex].quantity += quantity;
         } else {
-          const cartItem = { ...product, quantity, selectedSize, selectedColor };
-          cart.push(cartItem);
+          cart.push({ ...product, quantity, selectedSize, selectedColor });
         }
 
         localStorage.setItem("cart", JSON.stringify(cart));
-
-        // Call the global function from app.js for immediate feedback
-        window.updateCartCount();
+        window.updateCartCount?.();
 
         const successMessage = document.getElementById("success-message");
         successMessage.classList.add("show");
         setTimeout(() => successMessage.classList.remove("show"), 2000);
       });
-
-    } catch (error) {
+    } catch (err) {
       container.innerHTML = `<p style="color:red;">❌ Failed to load product details.</p>`;
-      console.error("Product detail error:", error);
+      console.error("Product detail error:", err);
     }
   };
 
