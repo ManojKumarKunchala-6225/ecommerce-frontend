@@ -1,36 +1,40 @@
 // In scripts/app.js
 
-document.addEventListener('DOMContentLoaded', function() {
-    // --- This function handles the Login/Profile button visibility ---
-    updateUserStatus();
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { auth } from "./firebase.js";
 
-    // --- This handles the logout button functionality ---
-    const logoutButton = document.getElementById('logout-btn');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', handleLogout);
+const loginButton = document.getElementById('login-btn');
+const profileButton = document.getElementById('profile-btn');
+const logoutButton = document.getElementById('logout-btn'); // Find the new button
+
+/**
+ * This listener checks the user's sign-in state.
+ */
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // User is signed in
+        if (loginButton) loginButton.style.display = 'none';
+        if (profileButton) profileButton.style.display = 'block';
+    } else {
+        // User is signed out
+        if (loginButton) loginButton.style.display = 'block';
+        if (profileButton) profileButton.style.display = 'none';
     }
 });
 
-function updateUserStatus() {
-    const loginButton = document.getElementById('login-btn');
-    const profileButton = document.getElementById('profile-btn');
-
-    if (loginButton && profileButton) {
-        if (localStorage.getItem('userIsLoggedIn') === 'true') {
-            // If logged in, show Profile and hide Login
-            loginButton.style.display = 'none';
-            profileButton.style.display = 'block';
-        } else {
-            // If not logged in, show Login and hide Profile
-            loginButton.style.display = 'block';
-            profileButton.style.display = 'none';
-        }
-    }
-}
-
-function handleLogout(event) {
-    event.preventDefault(); // Prevent the link from navigating anywhere
-    localStorage.removeItem('userIsLoggedIn');
-    alert('You have been logged out.');
-    window.location.href = 'home.html'; // Go to homepage after logout
+/**
+ * --- NEW: LOGOUT FUNCTIONALITY ---
+ * This handles what happens when the logout button is clicked.
+ */
+if (logoutButton) {
+    logoutButton.addEventListener('click', () => {
+        signOut(auth).then(() => {
+            // Sign-out successful.
+            alert("You have been successfully logged out.");
+            window.location.href = 'home.html'; // Redirect to the homepage
+        }).catch((error) => {
+            // An error happened.
+            console.error('Sign Out Error', error);
+        });
+    });
 }

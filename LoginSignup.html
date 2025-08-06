@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Signup</title>
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
-        /* --- YOUR ORIGINAL CSS IS PRESERVED --- */
+        /* All your original CSS is preserved here */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #d4fc79, #96e6a1); display: flex; flex-direction: column; align-items: center; height: 100vh; }
+        .header { display: flex; justify-content: space-between; align-items:center; background-color: #ffffff; padding: 15px 5%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); width: 100%; z-index: 999; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #000 !important; }
+        .nav-links a, .user-auth a { text-decoration: none; color: #333; font-weight: 500; }
+        
         * {
             box-sizing: border-box;
             margin: 0;
@@ -110,7 +109,6 @@
     </style>
 </head>
 <body>
-
     <header class="header">
         <div class="logo">🛍️ ShopMate</div>
         <div class="header-right">
@@ -120,7 +118,6 @@
                 <a href="./contact.html">Contact</a>
             </nav>
             <div class="user-auth">
-                <a href="LoginSignup.html" id="login-btn">Login</a>
                 <a href="#" id="profile-btn" style="display: none;">Profile</a>
             </div>
         </div>
@@ -134,11 +131,9 @@
                     <div class="input-group"> <input type="text" id="signUpName" placeholder="Full Name" required> </div>
                     <div class="input-group"> <input type="email" id="signUpEmail" placeholder="Email" required> </div>
                     <div class="input-group"> <input type="password" id="signUpPassword" placeholder="Password" required> </div>
-                    <div class="input-group"> <input type="password" id="confirmPassword" placeholder="Confirm Password" required> </div>
                     <button type="submit">Sign Up</button>
                 </form>
             </div>
-
             <div class="form-container sign-in-container">
                 <form id="signInForm">
                     <h1>Login</h1>
@@ -148,41 +143,22 @@
                     <button type="submit">Login</button>
                 </form>
             </div>
-
             <div class="overlay-container">
                 <div class="overlay">
-                    <div class="overlay-panel overlay-left">
-                        <h1>Welcome Back!</h1>
-                        <p>To keep connected with us please login with your personal info</p>
-                        <button class="ghost" id="signIn">Login</button>
-                    </div>
-                    <div class="overlay-panel overlay-right">
-                        <h1>Hello, Friend!</h1>
-                        <p>Enter your personal details and start your journey with us</p>
-                        <button class="ghost" id="signUp">Sign Up</button>
-                    </div>
+                    <div class="overlay-panel overlay-left"><h1>Welcome Back!</h1><p>To keep connected... please login</p><button class="ghost" id="signIn">Login</button></div>
+                    <div class="overlay-panel overlay-right"><h1>Hello, Friend!</h1><p>Enter your details and start your journey</p><button class="ghost" id="signUp">Sign Up</button></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // --- MODIFICATION 2: JAVASCRIPT LOGIC ADDED AND MODIFIED ---
+    <script type="module">
+        // Import the necessary functions from Firebase SDK
+        import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        // Import your configured auth service from firebase.js
+        import { auth } from "./scripts/firebase.js";
 
-        // This function updates the header buttons based on login status
-        function updateUserStatus() {
-            const loginButton = document.getElementById('login-btn');
-            const profileButton = document.getElementById('profile-btn');
-            if (localStorage.getItem('userIsLoggedIn') === 'true') {
-                loginButton.style.display = 'none';
-                profileButton.style.display = 'block';
-            } else {
-                loginButton.style.display = 'block';
-                profileButton.style.display = 'none';
-            }
-        }
-
-        // Your original animation code is preserved
+        // Your animation logic is preserved
         const signUpButton = document.getElementById('signUp');
         const signInButton = document.getElementById('signIn');
         const container = document.getElementById('container');
@@ -190,68 +166,40 @@
         signUpButton.addEventListener('click', () => container.classList.add('right-panel-active'));
         signInButton.addEventListener('click', () => container.classList.remove('right-panel-active'));
 
-        // Your original form validation and handling code is preserved
+        // Form elements
         const signUpForm = document.getElementById('signUpForm');
         const signInForm = document.getElementById('signInForm');
 
-        // This is the MODIFIED login form submission logic
-        signInForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const emailInput = document.getElementById('signInEmail').value;
-            const passwordInput = document.getElementById('signInPassword').value;
-
-            // Simple validation check
-            if (emailInput && passwordInput) {
-                // Set the login status in the browser's memory
-                localStorage.setItem('userIsLoggedIn', 'true');
-                
-                // Alert the user and redirect to the homepage
-                alert('Login Successful! Redirecting to the home page...');
-                window.location.href = 'home.html';
-            } else {
-                alert('Please enter both email and password.');
-            }
-        });
-        
-        // This is the MODIFIED sign-up form submission logic
+        // --- User Signup with Firebase ---
         signUpForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const nameInput = document.getElementById('signUpName').value;
-            const emailInput = document.getElementById('signUpEmail').value;
-            const passwordInput = document.getElementById('signUpPassword').value;
-            const confirmPasswordInput = document.getElementById('confirmPassword').value;
+            const email = document.getElementById('signUpEmail').value;
+            const password = document.getElementById('signUpPassword').value;
 
-            // Simple validation for sign-up
-            if (nameInput && emailInput && passwordInput && (passwordInput === confirmPasswordInput)) {
-                // Also log the user in after they sign up successfully
-                localStorage.setItem('userIsLoggedIn', 'true');
-                
-                alert('Sign Up Successful! Redirecting to the home page...');
-                window.location.href = 'home.html';
-            } else if (passwordInput !== confirmPasswordInput) {
-                alert('Passwords do not match. Please try again.');
-            } else {
-                alert('Please fill out all fields to sign up.');
-            }
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("Sign up successful! Welcome.");
+                    window.location.href = 'home.html';
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
         });
         
-        // This runs the header update function as soon as the page loads
-        document.addEventListener('DOMContentLoaded', updateUserStatus);
-    </script>
-    <script>
-            signInForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // This line is already in your code
+        // --- User Login with Firebase ---
+        signInForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signInEmail').value;
+            const password = document.getElementById('signInPassword').value;
 
-            // Check if the login details are valid (you might have more checks)
-            if (emailInput.value && passwordInput.value) {
-                
-                // ADD THIS LINE HERE:
-                localStorage.setItem('isLoggedIn', 'true');
-
-                // Then, redirect the user to the homepage
-                alert('Login successful! Redirecting...');
-                window.location.href = 'home.html';
-            }
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("Login successful!");
+                    window.location.href = 'home.html';
+                })
+                .catch((error) => {
+                    alert("Incorrect email or password. Please try again.");
+                });
         });
     </script>
 </body>
