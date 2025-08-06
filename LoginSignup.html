@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Signup</title>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,15 +15,72 @@
 
     <style>
         /* --- YOUR ORIGINAL CSS IS PRESERVED --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #d4fc79, #96e6a1); display: flex; flex-direction: column; align-items: center; height: 100vh; }
-        .header { display: flex; justify-content: space-between; align-items:center; background-color: #ffffff; padding: 15px 5%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); width: 100%; z-index: 999; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: #000 !important; }
-        .nav-links { display: flex; gap: 25px; }
-        .nav-links a, .user-auth a { text-decoration: none; color: #333; font-weight: 500; font-size: 1em; transition: color 0.3s ease; }
-        .nav-links a:hover, .user-auth a:hover { color: #007bff; }
-        .header-right { display: flex; align-items:center; gap: 25px; }
-        .main-content { display: flex; justify-content: center; align-items: center; flex-grow: 1; width: 100%; padding: 20px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif; /* Changed for better font */
+            background: linear-gradient(135deg, #d4fc79, #96e6a1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        /* --- MODIFIED HEADER STYLING FOR CONSISTENCY --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items:center;
+            background-color: #ffffff;
+            padding: 15px 5%; /* Using percentage for better scaling */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            z-index: 999;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000 !important;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px; /* Increased gap */
+        }
+
+        .nav-links a, .user-auth a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 1em;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, .user-auth a:hover {
+            color: #007bff;
+        }
+
+        .header-right {
+            display: flex;
+            align-items:center; /* Vertically align items */
+            gap: 25px;
+        }
+        
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            width: 100%;
+            padding: 20px;
+        }
+        
+        /* --- ALL YOUR OTHER ORIGINAL CSS FOR FORMS AND ANIMATIONS IS PRESERVED BELOW --- */
         .container { background-color: #fff; border-radius: 10px; box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22); position: relative; overflow: hidden; width: 768px; max-width: 90%; min-height: 520px; }
         .form-container { position: absolute; top: 0; height: 100%; transition: all 0.6s ease-in-out; }
         form { background-color: #fff; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 0 50px; height: 100%; text-align: center; }
@@ -49,6 +110,7 @@
     </style>
 </head>
 <body>
+
     <header class="header">
         <div class="logo">🛍️ ShopMate</div>
         <div class="header-right">
@@ -105,6 +167,8 @@
     </div>
 
     <script>
+        // --- MODIFICATION 2: JAVASCRIPT LOGIC ADDED AND MODIFIED ---
+
         // This function updates the header buttons based on login status
         function updateUserStatus() {
             const loginButton = document.getElementById('login-btn');
@@ -126,17 +190,22 @@
         signUpButton.addEventListener('click', () => container.classList.add('right-panel-active'));
         signInButton.addEventListener('click', () => container.classList.remove('right-panel-active'));
 
-        // Form handling logic using localStorage
+        // Your original form validation and handling code is preserved
         const signUpForm = document.getElementById('signUpForm');
         const signInForm = document.getElementById('signInForm');
 
+        // This is the MODIFIED login form submission logic
         signInForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const emailInput = document.getElementById('signInEmail').value;
             const passwordInput = document.getElementById('signInPassword').value;
 
+            // Simple validation check
             if (emailInput && passwordInput) {
+                // Set the login status in the browser's memory
                 localStorage.setItem('userIsLoggedIn', 'true');
+                
+                // Alert the user and redirect to the homepage
                 alert('Login Successful! Redirecting to the home page...');
                 window.location.href = 'home.html';
             } else {
@@ -144,6 +213,7 @@
             }
         });
         
+        // This is the MODIFIED sign-up form submission logic
         signUpForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const nameInput = document.getElementById('signUpName').value;
@@ -151,8 +221,11 @@
             const passwordInput = document.getElementById('signUpPassword').value;
             const confirmPasswordInput = document.getElementById('confirmPassword').value;
 
+            // Simple validation for sign-up
             if (nameInput && emailInput && passwordInput && (passwordInput === confirmPasswordInput)) {
+                // Also log the user in after they sign up successfully
                 localStorage.setItem('userIsLoggedIn', 'true');
+                
                 alert('Sign Up Successful! Redirecting to the home page...');
                 window.location.href = 'home.html';
             } else if (passwordInput !== confirmPasswordInput) {
@@ -164,6 +237,22 @@
         
         // This runs the header update function as soon as the page loads
         document.addEventListener('DOMContentLoaded', updateUserStatus);
+    </script>
+    <script>
+            signInForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // This line is already in your code
+
+            // Check if the login details are valid (you might have more checks)
+            if (emailInput.value && passwordInput.value) {
+                
+                // ADD THIS LINE HERE:
+                localStorage.setItem('isLoggedIn', 'true');
+
+                // Then, redirect the user to the homepage
+                alert('Login successful! Redirecting...');
+                window.location.href = 'home.html';
+            }
+        });
     </script>
 </body>
 </html>

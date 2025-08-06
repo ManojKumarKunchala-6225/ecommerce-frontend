@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShopMate | Your Online Store</title>
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🛍️ ShopMate</div>
+    <nav class="nav-links" id="nav-links">
+      <a href="./home.html">Home</a>
+      <a href="./products.html">Products</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html">Contact</a>
+    </nav>
+    <div class="header-right">
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search products..." />
+      </div>
+      <div class="cart" onclick="window.location.href='cart.html'">
+        🛒<span class="cart-badge" id="cart-count">0</span>
+      </div>
+      <div class="user-auth">
+        <a href="LoginSignup.html" id="login-btn">Login</a>
+        <a href="./profile.html" id="profile-btn" style="display: none;">Profile</a>
+        <a href="#" id="logout-btn" style="display: none; color: red;">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Biggest Sale of the Year!</h1>
+      <p class="hero-subtitle">Up to 70% off on top products. Limited time only.</p>
+      <a href="./products.html" class="hero-cta">Shop Now</a>
+    </div>
+  </section>
+
+  <main>
+    <h1>Welcome to Our Online Store</h1>
+    <p>Find the best deals, handpicked just for you!</p>
+  </main>
+
+  <!-- Firebase + Auth Check -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+    import { firebaseConfig } from './scripts/firebase.js'; // ✅ make sure this path is correct
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const loginBtn = document.getElementById('login-btn');
+    const profileBtn = document.getElementById('profile-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loginBtn.style.display = 'none';
+        profileBtn.style.display = 'inline-block';
+        logoutBtn.style.display = 'inline-block';
+      } else {
+        loginBtn.style.display = 'inline-block';
+        profileBtn.style.display = 'none';
+        logoutBtn.style.display = 'none';
+      }
+    });
+
+    logoutBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      await signOut(auth);
+      alert('You have been logged out.');
+      window.location.href = "LoginSignup.html";
+    });
+  </script>
+
+  <!-- Other Scripts -->
+  <script src="scripts/app.js"></script>
+  <script src="scripts/auth.js"></script>
+</body>
+</html>

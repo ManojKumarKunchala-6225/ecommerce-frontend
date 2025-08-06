@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile - ShopMate</title>
+    <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🛍️ ShopMate</div>
+        <nav class="nav-links" id="nav-links">
+            <a href="./home.html">Home</a>
+            <a href="./products.html">Products</a>
+            <a href="./about.html">About</a>
+        </nav>
+        <div class="header-right">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search products..." />
+            </div>
+            <div class="cart" onclick="window.location.href='cart.html'">
+                🛒<span class="cart-badge" id="cart-count">0</span>
+            </div>
+            <div class="user-auth">
+                <a href="LoginSignup.html" id="login-btn">Login</a>
+                <a href="profile.html" id="profile-btn" style="display: none;">Profile</a>
+            </div>
+        </div>
+    </header>
+
+    <main style="text-align: center; padding: 50px;">
+        <h1>Welcome to Your Profile</h1>
+        <p>Here you can view your orders, update your details, and manage your account.</p>
+        
+        <button id="logout-btn" style="background-color: #d9534f; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">
+            Logout
+        </button>
+    </main>
+
+    <script src="scripts/app.js"></script>
+
+    <script>
+        // Find the logout button by its ID
+        const logoutButton = document.getElementById('logout-btn');
+
+        // Add an event listener that waits for the button to be clicked
+        logoutButton.addEventListener('click', function() {
+            // Remove the login status from the browser's memory
+            localStorage.removeItem('userIsLoggedIn');
+
+            // Alert the user and redirect them to the homepage
+            alert('You have been logged out.');
+            window.location.href = 'home.html';
+        });
+    </script>
+</body>
+</html>

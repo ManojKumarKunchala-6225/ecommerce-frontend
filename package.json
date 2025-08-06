@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/ManojKumarKunchala-6225/ecommerce-frontend/issues"
   },
-  "homepage": "https://github.com/ManojKumarKunchala-6225/ecommerce-frontend#readme"
+  "homepage": "https://github.com/ManojKumarKunchala-6225/ecommerce-frontend#readme",
+  "dependencies": {
+    "firebase": "^12.0.0"
+  }
 }
