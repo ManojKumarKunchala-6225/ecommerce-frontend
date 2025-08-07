@@ -1,53 +1,43 @@
-const auth = firebase.auth();
-
-const authForm = document.getElementById("auth-form");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const toggleLink = document.getElementById("toggle-link");
-const formTitle = document.getElementById("form-title");
-const submitBtn = document.getElementById("submit-btn");
-const errorMessage = document.getElementById("error-message");
-const successMessage = document.getElementById("success-message");
-
-let isLogin = true; // start in login mode
-
-toggleLink.addEventListener("click", (e) => {
-  e.preventDefault();
-  isLogin = !isLogin;
-  formTitle.textContent = isLogin ? "Login" : "Sign Up";
-  submitBtn.textContent = isLogin ? "Login" : "Sign Up";
-  toggleLink.textContent = isLogin
-    ? "Sign up here"
-    : "Login here";
-});
-
-authForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const email = emailInput.value;
-  const password = passwordInput.value;
-
-  errorMessage.textContent = "";
-  successMessage.textContent = "";
-
-  if (isLogin) {
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        successMessage.textContent = "Login successful!";
-        window.location.href = "home.html";
-      })
-      .catch((error) => {
-        errorMessage.textContent = error.message;
-      });
-  } else {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        successMessage.textContent = "Signup successful!";
-        window.location.href = "home.html";
-      })
-      .catch((error) => {
-        errorMessage.textContent = error.message;
-      });
-  }
-});
+const e = firebase.auth(),
+  t = document.getElementById("auth-form"),
+  n = document.getElementById("email"),
+  o = document.getElementById("password"),
+  s = document.getElementById("toggle-link"),
+  m = document.getElementById("form-title"),
+  d = document.getElementById("submit-btn"),
+  i = document.getElementById("error-message"),
+  l = document.getElementById("success-message");
+let c = !0;
+s.addEventListener("click", (e) => {
+  e.preventDefault(),
+    (c = !c),
+    (m.textContent = c ? "Login" : "Sign Up"),
+    (d.textContent = c ? "Login" : "Sign Up"),
+    (s.textContent = c ? "Sign up here" : "Login here");
+}),
+  t.addEventListener("submit", (t) => {
+    t.preventDefault();
+    const s = n.value,
+      m = o.value;
+    (i.textContent = ""),
+      (l.textContent = ""),
+      c
+        ? e
+            .signInWithEmailAndPassword(s, m)
+            .then((e) => {
+              (l.textContent = "Login successful!"),
+                (window.location.href = "home.html");
+            })
+            .catch((e) => {
+              i.textContent = e.message;
+            })
+        : e
+            .createUserWithEmailAndPassword(s, m)
+            .then((e) => {
+              (l.textContent = "Signup successful!"),
+                (window.location.href = "home.html");
+            })
+            .catch((e) => {
+              i.textContent = e.message;
+            });
+  });

@@ -1,15 +1,8 @@
-// In scripts/app.js
-
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { auth } from "./firebase.js";
-
 const loginButton = document.getElementById('login-btn');
 const profileButton = document.getElementById('profile-btn');
 const logoutButton = document.getElementById('logout-btn'); // Find the new button
-
-/**
- * This listener checks the user's sign-in state.
- */
 onAuthStateChanged(auth, (user) => {
     if (user) {
         // User is signed in
@@ -21,11 +14,6 @@ onAuthStateChanged(auth, (user) => {
         if (profileButton) profileButton.style.display = 'none';
     }
 });
-
-/**
- * --- NEW: LOGOUT FUNCTIONALITY ---
- * This handles what happens when the logout button is clicked.
- */
 if (logoutButton) {
     logoutButton.addEventListener('click', () => {
         signOut(auth).then(() => {
@@ -38,3 +26,18 @@ if (logoutButton) {
         });
     });
 }
+
+
+export function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCountEl = document.getElementById("cart-count");
+  if (cartCountEl) {
+    cartCountEl.textContent = totalItems;
+  }
+}
+
+// Run on page load
+window.addEventListener('DOMContentLoaded', () => {
+  updateCartCount();
+});

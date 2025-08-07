@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const initImageZoom = (imgContainer, imgSrc) => {
     const img = imgContainer.querySelector("#product-image");
 
-    // Mobile zoom
     const mobileTrigger = document.getElementById("mobile-zoom-trigger");
     const triggerMobileZoom = () => {
       if (window.innerWidth > 768 || document.querySelector(".zoom-popup")) return;
@@ -41,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
       img.addEventListener("click", triggerMobileZoom);
     }
 
-    // Desktop zoom
     const lens = document.createElement("div");
     lens.className = "zoom-lens";
     imgContainer.appendChild(lens);
@@ -229,7 +227,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         localStorage.setItem("cart", JSON.stringify(cart));
-        window.updateCartCount?.();
+
+        // ✅ Update cart count in UI
+        updateCartCount();
 
         const successMessage = document.getElementById("success-message");
         successMessage.classList.add("show");
@@ -246,4 +246,16 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     container.innerHTML = `<p>❌ Invalid product ID in URL.</p>`;
   }
+
+  // ✅ Run this on page load to sync cart count
+  updateCartCount();
 });
+
+// ✅ Global function to update cart count badge
+function updateCartCount() {
+  const cartCountElement = document.getElementById("cart-count");
+  if (!cartCountElement) return;
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  cartCountElement.textContent = totalQuantity;
+}

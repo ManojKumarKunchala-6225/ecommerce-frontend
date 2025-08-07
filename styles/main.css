@@ -69,16 +69,14 @@ body {
 }
 
 .cart-badge {
-  position: absolute;
-  top: -8px;
-  right: -10px;
-  background: red;
+  background-color: red;
   color: white;
-  font-size: 12px;
-  padding: 2px 6px;
   border-radius: 50%;
-  display: none; /* Hidden by default, shown by JS */
+  padding: 2px 6px;
+  font-size: 14px;
+  margin-left: 4px;
 }
+
 
 /* Hamburger Icon */
 .hamburger {
@@ -227,7 +225,7 @@ body {
   padding: 2rem;
   gap: 2rem;
   justify-content: center;
-  background-color: #f9f9f9;
+  background: linear-gradient(135deg, #d4fc79, #96e6a1);
 }
 
 .product-detail-image {

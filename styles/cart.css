@@ -6,6 +6,10 @@ body {
   background: linear-gradient(135deg, #d4fc79, #96e6a1);
   color: #070707;
 }
+body.cart-page-body {
+  background: linear-gradient(135deg, #d4fc79, #96e6a1);
+}
+
 /* Header */
 nav {
   display: flex;

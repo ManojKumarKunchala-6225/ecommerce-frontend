@@ -32,3 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Products fetch error:", err);
     });
 });
+function updateCartCount() {
+  const cartCountElement = document.getElementById("cart-count");
+  if (!cartCountElement) return;
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  cartCountElement.textContent = totalQuantity;
+}
+updateCartCount();
