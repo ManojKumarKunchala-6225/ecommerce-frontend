@@ -26,7 +26,7 @@ s.addEventListener("click", (e) => {
             .signInWithEmailAndPassword(s, m)
             .then((e) => {
               (l.textContent = "Login successful!"),
-                (window.location.href = "home.html");
+                (window.location.href = "index.html");
             })
             .catch((e) => {
               i.textContent = e.message;
@@ -35,7 +35,7 @@ s.addEventListener("click", (e) => {
             .createUserWithEmailAndPassword(s, m)
             .then((e) => {
               (l.textContent = "Signup successful!"),
-                (window.location.href = "home.html");
+                (window.location.href = "index.html");
             })
             .catch((e) => {
               i.textContent = e.message;

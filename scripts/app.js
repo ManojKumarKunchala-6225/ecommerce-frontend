@@ -19,7 +19,7 @@ if (logoutButton) {
         signOut(auth).then(() => {
             // Sign-out successful.
             alert("You have been successfully logged out.");
-            window.location.href = 'home.html'; // Redirect to the homepage
+            window.location.href = 'index.html'; // Redirect to the homepage
         }).catch((error) => {
             // An error happened.
             console.error('Sign Out Error', error);
